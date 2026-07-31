@@ -1,0 +1,479 @@
+{
+  "course": "计算机网络（第8版）- 谢希仁",
+  "deduplication_strategy": "针对第1章概述及各章节中重复出现的知识点进行归一化重构：1. 物理层/数据链路层/网络层/运输层等具体协议与机制从第1章剔除，映射至第2~5章详细展开；2. 网络设备（集线器、交换机、路由器）统一归入其核心工作图层（物理层/数据链路层/网络层）展开；3. 寻址体系（MAC地址与IP地址）及其转换关系统一在第3章与第4章整合阐述；4. 交换技术（电路/分组交换）与性能指标保留在第1章作为全局基石；5. 高层应用协议（DNS/FTP/HTTP/SMTP/DHCP/SNMP）统一在第6章结合各层支撑机制详细展开；6. 网络安全与无线移动网络作为高层/综合拓展独立收录于第7章与第9章[cite: 12]。",
+  "knowledge_tree": [
+    {
+      "chapter_id": 1,
+      "chapter_title": "第1章 概述",
+      "topics": [
+        {
+          "topic": "互联网的基本概念与结构",
+          "knowledge_points": [
+            "计算机网络与互连网定义（internet 与 Internet 的区别）[cite: 12]",
+            "互联网的两大基本特点：连通性（Connectivity）与资源共享（Sharing）[cite: 12]",
+            "互联网的组成：边缘部分（端系统/主机，包含 C/S 模式与 P2P 通信模式）与核心部分（网络与路由器）[cite: 12]",
+            "三种典型交换技术对比：电路交换（建立连接-通话-释放连接，端到端独占）、报文交换（存储转发，时延大）、分组交换（高效、灵活、迅速、可靠，基于首部/包头的存储转发）[cite: 12]",
+            "互联网的多层次 ISP 结构与互联网交换点 IXP[cite: 12]",
+            "互联网标准化工作：RFC 文档（互联网草案 -> 建议标准 -> 互联网标准/STD）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "计算机网络的性能指标",
+          "knowledge_points": [
+            "速率（data rate / bit rate，单位 bit/s）[cite: 12]",
+            "带宽（bandwidth，信号频带宽度 Hz 或最高数据率 bit/s）[cite: 12]",
+            "吞吐量（throughput，单位时间通过网络的实际数据量）[cite: 12]",
+            "时延（delay / latency）构成：发送/传输时延（数据帧长度/发送速率）、传播时延（信道长度/传播速率）、处理时延、排队时延；总时延计算[cite: 12]",
+            "时延带宽积（传播时延 × 带宽，以比特为单位的链路长度）[cite: 12]",
+            "往返时间 RTT（Round-Trip Time）[cite: 12]",
+            "利用率：信道利用率与网络利用率，时延与利用率关系公式 D = D0 / (1 - U)[cite: 12]"
+          ]
+        },
+        {
+          "topic": "计算机网络体系结构",
+          "knowledge_points": [
+            "分层设计思想：优点（独立性、灵活性、易维护、标准化）与缺点（功能重复开销）[cite: 12]",
+            "体系结构演进：OSI 7层参考模型 vs TCP/IP 4层体系结构 vs 教学 5层体系结构（物理层、数据链路层、网络层、运输层、应用层）[cite: 12]",
+            "核心概念厘清：实体（Entity）、协议（Protocol，三要素：语法、语义、同步）、服务（Service，垂直提供）与服务访问点 SAP[cite: 12]",
+            "对等层通信与数据封装过程：PDU（协议数据单元）、SDU（服务数据单元）、首部/尾部加封与剥离[cite: 12]",
+            "【去重映射】：五层协议中各层具体功能与报文格式剥离至第2-5章详细构建[cite: 12]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 2,
+      "chapter_title": "第2章 物理层",
+      "topics": [
+        {
+          "topic": "物理层基本概念与特性",
+          "knowledge_points": [
+            "物理层规程（Procedure）的作用：屏蔽传输媒体与通信手段的差异[cite: 12]",
+            "接口四大特性：机械特性（接口形状尺寸引脚）、电气特性（电压范围）、功能特性（信号线电平意义）、过程特性（事件出现顺序）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "数据通信基础知识",
+          "knowledge_points": [
+            "数据通信系统模型：源系统（源点、发送器）、传输系统、目的系统（接收器、终点）[cite: 12]",
+            "基本术语：消息（Message）、数据（Data）、信号（Signal，模拟信号 vs 数字信号）、码元（Symbol）[cite: 12]",
+            "信道通信交互方式：单向通信（单工）、双向交替通信（半双工）、双向同时通信（全双工）[cite: 12]",
+            "信道调制与编码：基带调制（NRZ, RZ, 曼彻斯特编码, 差分曼彻斯特编码）与带通调制（AM, FM, PM, QAM）[cite: 12]",
+            "信道极限容量定理：奈氏准则（低通信道极限速率 2W 码元/秒）与香农公式（有噪信道极限速率 C = W * log2(1 + S/N)）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "传输媒体",
+          "knowledge_points": [
+            "导引型传输媒体：双绞线（UTP/STP）、同轴电缆、光缆（全反射原理，多模 vs 单模光纤）[cite: 12]",
+            "非导引型传输媒体：无线电微波通信（视距 LOS 传播、多径效应、微波接力与卫星通信）、ISM 免许可频段[cite: 12]"
+          ]
+        },
+        {
+          "topic": "信道复用技术",
+          "knowledge_points": [
+            "频分复用 FDM 与 频分多址 FDMA[cite: 12]",
+            "时分复用 TDM 与 统计时分复用 STDM[cite: 12]",
+            "波分复用 WDM（光的频分复用）[cite: 12]",
+            "码分复用 CDM / 码分多址 CDMA：码片与码片序列正交性、扩频技术（DSSS/FHSS）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "数字传输与宽带接入技术",
+          "knowledge_points": [
+            "数字传输系统：准同步体制缺点、SONET 与 SDH[cite: 12]",
+            "宽带接入技术：ADSL（DMT 调制）、HFC 网（Cable Modem）、FTTx 与无源光网络 PON（OLT, ODN, ONU; EPON 与 GPON）[cite: 12]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 3,
+      "chapter_title": "第3章 数据链路层",
+      "topics": [
+        {
+          "topic": "数据链路层基本原理与三个基本问题",
+          "knowledge_points": [
+            "物理链路与数据链路的区别、帧的概念与信道分类[cite: 12]",
+            "三个基本问题：封装成帧（SOH/EOT, MTU）、透明传输（字节填充 ESC / 零比特填充 5110）、差错检测（CRC 原理、生成多项式 P(X)、FCS、误码率 BER）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "点对点协议 PPP",
+          "knowledge_points": [
+            "PPP 协议组成：IP数据报封装方法、LCP（链路控制）、NCP（网络控制）[cite: 12]",
+            "PPP 帧格式与透明传输（异步字节填充，同步零比特填充）[cite: 12]",
+            "PPP 链路工作状态机流程[cite: 12]"
+          ]
+        },
+        {
+          "topic": "广播信道与局域网（LAN）",
+          "knowledge_points": [
+            "局域网拓扑与 IEEE 802 标准（LLC 与 MAC 子层）[cite: 12]",
+            "网络适配器（网卡）功能[cite: 12]",
+            "CSMA/CD 协议（载波监听多点接入/碰撞检测）：工作要点、争用期（2τ）、最短有效帧长（64字节）、截断二进制指数退避算法、强化碰撞干扰信号与帧间最小间隔（9.6 μs）、极限信道利用率[cite: 12]",
+            "MAC 硬件地址（EUI-48）与以太网 V2 MAC 帧格式[cite: 12]"
+          ]
+        },
+        {
+          "topic": "扩展的以太网",
+          "knowledge_points": [
+            "物理层扩展：集线器 Hub 与碰撞域[cite: 12]",
+            "数据链路层扩展：以太网交换机（多端口网桥，全双工，隔离碰撞域）、交换方式（存储转发 vs 直通转发）、自学习算法、生成树协议 STP[cite: 12]",
+            "虚拟局域网 VLAN：广播域隔离、划分方法、IEEE 802.1Q 帧格式（VLAN Tag）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "高速以太网",
+          "knowledge_points": [
+            "100BASE-T 快速以太网、吉比特以太网（载波延伸与分组突发）、10 吉比特以太网及更高速率[cite: 12]",
+            "PPPoE（以太网宽带接入封装技术）[cite: 12]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 4,
+      "chapter_title": "第4章 网络层",
+      "topics": [
+        {
+          "topic": "网络层服务与架构",
+          "knowledge_points": [
+            "虚电路服务 VC vs 数据报服务（尽最大努力交付）[cite: 12]",
+            "数据层面（硬件快速转发）与控制层面（软件计算路由）[cite: 12]",
+            "软件定义网络 SDN 概念[cite: 12]"
+          ]
+        },
+        {
+          "topic": "网际协议 IP (IPv4)",
+          "knowledge_points": [
+            "IP 协议配套体系（IP, ARP, ICMP, IGMP）与虚拟互连网络[cite: 12]",
+            "分类 IP 地址（A/B/C/D/E 类及特殊 IP 地址）[cite: 12]",
+            "无分类编址 CIDR：斜线记法 /n、地址掩码、路由聚合与超网[cite: 12]",
+            "IP 地址与 MAC 地址的关系：IP 地址全程不变，MAC 地址逐跳改变[cite: 12]"
+          ]
+        },
+        {
+          "topic": "地址解析协议 ARP",
+          "knowledge_points": [
+            "ARP 作用：从已知 IP 动态解析出 MAC 地址[cite: 12]",
+            "ARP 高速缓存与局域网广播请求/单播响应过程[cite: 12]"
+          ]
+        },
+        {
+          "topic": "IP 数据报格式",
+          "knowledge_points": [
+            "固定首部（20 字节）：版本、首部长度、总长度、标识、标志（DF, MF）、片偏移、TTL、协议号、首部检验和、源/目的 IP[cite: 12]"
+          ]
+        },
+        {
+          "topic": "IP 层分组转发与查找",
+          "knowledge_points": [
+            "基于终点的转发表查找、最长前缀匹配原则、特定主机/默认路由、二叉线索树[cite: 12]"
+          ]
+        },
+        {
+          "topic": "网际控制报文协议 ICMP",
+          "knowledge_points": [
+            "ICMP 作用与报文分类（差错报告报文 vs 询问报文）[cite: 12]",
+            "典型应用：PING（Echo 报文）与 Traceroute（TTL 递增 + 超时报文）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "IPv6",
+          "knowledge_points": [
+            "128 位地址空间、固定 40 字节基本首部、冒号十六进制与零压缩 `::`[cite: 12]",
+            "单播/多播/任播地址、双协议栈与隧道过渡技术、ICMPv6[cite: 12]"
+          ]
+        },
+        {
+          "topic": "互联网路由选择协议",
+          "knowledge_points": [
+            "自治系统 AS、IGP（RIP, OSPF）与 EGP（BGP-4）[cite: 12]",
+            "RIP 协议：基于距离向量算法，以跳数为度量（最大15），慢收敛/环路问题[cite: 12]",
+            "OSPF 协议：基于链路状态算法（Dijkstra），全网洪泛，区域划分（主干区域/ABR/ASBR/DR）[cite: 12]",
+            "BGP-4 协议：基于路径向量算法，AS-PATH 解决环路[cite: 12]",
+            "路由器硬件构成：控制层面处理机 + 数据层面交换结构/端口排队[cite: 12]"
+          ]
+        },
+        {
+          "topic": "IP 多播（Multicast）",
+          "knowledge_points": [
+            "D 类多播地址映射到以太网多播 MAC 地址（01-00-5E）[cite: 12]",
+            "IGMP 协议（组管理与响应抑制）与多播路由算法（RPB 洪泛剪枝）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "虚拟专用网 VPN 与网络地址转换 NAT",
+          "knowledge_points": [
+            "专用 IP 地址（RFC 1918）与 VPN 隧道技术[cite: 12]",
+            "NAT / NAPT：结合 TCP/UDP 端口转换实现私网共享公网 IP[cite: 12]"
+          ]
+        },
+        {
+          "topic": "MPLS 与 SDN 简介",
+          "knowledge_points": [
+            "多协议标签交换 MPLS（LSR, LSP, FEC）[cite: 12]",
+            "SDN 控制与转发分离、OpenFlow 交换机与流表结构[cite: 12]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 5,
+      "chapter_title": "第5章 运输层",
+      "topics": [
+        {
+          "topic": "运输层协议概述",
+          "knowledge_points": [
+            "运输层作用：进程间端到端逻辑通信、复用与分用[cite: 12]",
+            "协议端口号（16bit）：熟知端口（0~1023）、登记端口、短暂端口[cite: 12]",
+            "套接字 Socket = (IP 地址 : 端口号)[cite: 12]"
+          ]
+        },
+        {
+          "topic": "用户数据报协议 UDP",
+          "knowledge_points": [
+            "UDP 特点：无连接、尽最大努力交付、面向报文、首部 8 字节[cite: 12]",
+            "UDP 检验和计算（含 12 字节伪首部）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "传输控制协议 TCP 概述",
+          "knowledge_points": [
+            "TCP 最主要特点：面向连接、点对点、可靠交付、全双工、面向字节流（发送/接收缓存）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "可靠传输的工作原理",
+          "knowledge_points": [
+            "停止等待协议：超时重传、确认丢失/迟到处理[cite: 12]",
+            "连续 ARQ 协议与滑动窗口：流水线传输、累积确认、Go-back-N 重传[cite: 12]"
+          ]
+        },
+        {
+          "topic": "TCP 报文段的首部格式",
+          "knowledge_points": [
+            "固定首部 20 字节：源/目的端口、序号 seq、确认号 ack、数据偏移、控制位（URG, ACK, PSH, RST, SYN, FIN）、接收窗口 rwnd、检验和、紧急指针[cite: 12]",
+            "TCP 选项：最大报文段长度 MSS、窗口扩大选项、SACK、时间戳（PAWS）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "TCP 可靠传输的实现",
+          "knowledge_points": [
+            "以字节为单位的滑动窗口机制（P1, P2, P3 指针）[cite: 12]",
+            "超时重传时间自适应算法（RTTS, RTTD, RTO 计算及 Karn 算法修正）[cite: 12]",
+            "选择确认 SACK 机制[cite: 12]"
+          ]
+        },
+        {
+          "topic": "TCP 的流量控制",
+          "knowledge_points": [
+            "利用滑动窗口（rwnd）动态抑制发送速率[cite: 12]",
+            "零窗口死锁与持续计时器（Persistence Timer）、零窗口探测报文段[cite: 12]",
+            "糊涂窗口综合症、Nagle 算法与 Clark 算法[cite: 12]"
+          ]
+        },
+        {
+          "topic": "TCP 的拥塞控制",
+          "knowledge_points": [
+            "拥塞控制原理与全局性特征，实际发送窗口 swnd = Min(rwnd, cwnd)[cite: 12]",
+            "四种基本算法：慢开始（指数增长）、拥塞避免（加性增大/乘性减小）、快重传（收到 3 个重复 ACK 立即重传）、快恢复[cite: 12]",
+            "主动队列管理 AQM（RED 随机早期检测）[cite: 12]"
+          ]
+        },
+        {
+          "topic": "TCP 的运输连接管理",
+          "knowledge_points": [
+            "三次握手建立连接：SYN=1 -> SYN=1, ACK=1 -> ACK=1[cite: 12]",
+            "四次挥手释放连接：FIN=1 -> ACK=1 -> FIN=1, ACK=1 -> ACK=1[cite: 12]",
+            "TIME-WAIT 状态等待 2MSL 的原因（保证 ACK 到达、清除失效报文）[cite: 12]",
+            "保活计时器 Keepalive Timer 作用[cite: 12]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 6,
+      "chapter_title": "第6章 应用层",
+      "topics": [
+        {
+          "topic": "域名系统 DNS",
+          "knowledge_points": [
+            "DNS 的定义与作用：联机分布式数据库系统，采用客户-服务器方式，实现域名与 IP 地址的动态映射[cite: 9]",
+            "互联网域名结构：层次树状结构，由标号序列组成（如 mail.cctv.com），不区分大小写，标号最长 63 字符，完整域名最长 255 字符；域名为逻辑概念，与物理位置无关[cite: 9]",
+            "顶级域名 TLD 分类：国家顶级域名 nTLD/ccTLD（如 .cn）、通用顶级域名 gTLD（如 .com, .org）、基础结构域名（.arpa 用于反向解析）、新顶级域名 New gTLD[cite: 9]",
+            "域名服务器四种类型：根域名服务器（最高层次，共有 13 套/组，采用任播 Anycast 技术，指引下一步 TLD 服务器）、顶级域名服务器 TLD、权限域名服务器（管辖一个“区” Zone）、本地域名服务器（默认域名服务器）[cite: 9]",
+            "主域名服务器与辅助域名服务器：数据定期复制，保障系统可靠性与数据一致性[cite: 9]",
+            "域名解析过程：基于 UDP 通信（端口 53）；递归查询（主机 -> 本地域名服务器）与 迭代查询（本地域名服务器 -> 根/TLD/权限域名服务器）[cite: 9]",
+            "高速缓存域名服务器：缓存最近使用的域名映射记录，利用 TTL 计时器控制生存期，减轻根服务器负荷[cite: 9]"
+          ]
+        },
+        {
+          "topic": "文件传输协议 FTP 与 TFTP",
+          "knowledge_points": [
+            "文件共享协议分类：文件传送协议（复制整个文件副本，如 FTP, TFTP）与 联机访问协议（透明片段读写，如 NFS）[cite: 9]",
+            "FTP 协议特点：解决异构网络不同操作系统间的适应性问题，基于 TCP 提供可靠传输，采用客户-服务器方式[cite: 9]",
+            "FTP 双连接工作机制：主进程在熟知端口 21 监听，从属进程处理并发请求；控制连接（端口 21，会话期间保持，传送请求/响应）与 数据连接（端口 20 或动态端口，传送文件，用完即释放）[cite: 9]",
+            "简单文件传送协议 TFTP：基于 UDP 通信（熟知端口 69），小巧易实现，不支持交互/指令集/身份鉴别[cite: 9]",
+            "TFTP 工作机制：采用类似停止等待协议的确认机制，数据块固定 512 字节（按序编号），若最后一次传输小于 512 字节作为文件结束标志[cite: 9]"
+          ]
+        },
+        {
+          "topic": "万维网 WWW 与 HTTP 协议",
+          "knowledge_points": [
+            "万维网 WWW 概念：分布式超媒体/超文本系统，采用客户-服务器方式，客户端为浏览器，服务器端为 Web 服务器，展示页面（Page）[cite: 9]",
+            "万维网四大核心机制：统一资源定位符 URL（标识资源）、超文本传送协议 HTTP（通信协议）、超文本标记语言 HTML（文档呈现）、搜索引擎（信息检索）[cite: 9]",
+            "统一资源定位符 URL：格式为 <协议>://<主机>:<端口>/<路径>，HTTP 默认端口 80，省略路径指向主页[cite: 9]",
+            "HTTP 协议核心特点：面向事务、基于 TCP、无状态（Stateless，通过 Cookie 跟踪状态）[cite: 9]",
+            "HTTP 连接演进与性能优化：HTTP/1.0 非持续连接（每个对象建立独立 TCP 连接，产生 2 RTT + 传输时间开销）；HTTP/1.1 持续连接（非流水线方式与流水线方式）；HTTP/2 协议优化（多路复用并行响应、报文二进制帧化、首部压缩算法）；代理服务器 / Web 高速缓存（Web Cache）降低链路流量与访问时延[cite: 9]",
+            "HTTP 报文结构与请求方法：报文由开始行（请求行/状态行）、首部行、实体主体组成，基于 ASCII 文本；请求方法包含 GET, HEAD, POST, PUT, DELETE, OPTION, TRACE, CONNECT；状态码分为 1xx（信息）、2xx（成功如 200/202）、3xx（重定向）、4xx（客户差错如 400/404）、5xx（服务器差错）[cite: 9]",
+            "Cookie 机制：服务端通过 Set-Cookie 发送标识码，客户端通过 Cookie 首部携带，结合后台数据库追踪用户状态[cite: 9]",
+            "万维网文档分类：静态文档（HTML/CSS/XHTML/XML）、动态文档（服务器端通过 CGI/脚本动态生成）、活动文档（客户端执行 JavaScript/Java Applet 等程序）[cite: 9]",
+            "搜索引擎分类：全文检索搜索引擎（Spider/索引数据库，如 Google/百度/Bing，结合 PageRank 算法）与 分类目录搜索引擎（人工编辑分类，如 Yahoo/新浪）[cite: 9]"
+          ]
+        },
+        {
+          "topic": "电子邮件系统",
+          "knowledge_points": [
+            "电子邮件系统构成：用户代理 UA（电子邮件客户端）、邮件服务器（邮件传输代理）与 通信协议[cite: 9]",
+            "电子邮件地址格式：收件人邮箱名@邮箱所在主机的域名[cite: 9]",
+            "电子邮件协议运作机制：“推”（Push，发送邮件，使用 SMTP）与 “拉”（Pull，读取邮件，使用 POP3/IMAP）[cite: 9]",
+            "简单邮件传送协议 SMTP：基于 TCP（熟知端口 25），基于 ASCII 文本的命令-响应交互；三个阶段：连接建立（HELO）、邮件传送（MAIL FROM, RCPT TO, DATA）、连接释放（QUIT）；邮件不经过中间服务器落地[cite: 9]",
+            "邮件读取协议 POP3 与 IMAP：POP3 基于 TCP（熟知端口 110），支持鉴别，下载邮件后可在本地离线阅读；IMAP 为联机协议，服务端与客户端文件夹实时同步，支持按需下载与服务端搜索；基于 Web 的电子邮件在用户与 Web 服务器间使用 HTTP，服务器间使用 SMTP[cite: 9]",
+            "通用互联网邮件扩充 MIME：解决 SMTP 只能传送 7位 ASCII 码的缺陷；增加 5 个新首部（MIME-Version, Content-Description, Content-Id, Content-Transfer-Encoding, Content-Type）；编码格式支持 7bit, 8bit, Binary, Base64（3字节转换为4字节 ASCII 字符）与 Quoted-printable[cite: 9]"
+          ]
+        },
+        {
+          "topic": "动态主机配置协议 DHCP",
+          "knowledge_points": [
+            "DHCP 作用：即插即用（Plug-and-Play）联网机制，自动为加入网络的计算机动态分配临时 IP 地址、子网掩码、默认网关及 DNS 服务器 IP[cite: 9]",
+            "DHCP 协议架构：客户-服务器模式，基于 UDP 通信，服务器运行在 67 端口，客户端运行在 68 端口[cite: 9]",
+            "DHCP 交互四步过程：1. DHCPDISCOVER（客户从 68 端口广播发现报文）；2. DHCPOFFER（服务器从 67 端口提供 IP 及配置）；3. DHCPREQUEST（客户广播请求报文选择配置）；4. DHCPACK（服务器单播确认，客户进入绑定状态）[cite: 9]",
+            "租用期（Lease Period）与续租机制：计时器 T1（0.5T）单播发送 DHCPREQUEST 更新租期；计时器 T2（0.875T）未响应时重新广播；异常时服务器发回 DHCPNACK，客户可发送 DHCPRELEASE 提前释放 IP[cite: 9]",
+            "DHCP 中继代理（Relay Agent）：跨网段转发 DHCP 广播报文，以单播方式与远端 DHCP 服务器交互[cite: 9]"
+          ]
+        },
+        {
+          "topic": "简单网络管理协议 SNMP",
+          "knowledge_points": [
+            "网络管理五大功能：故障管理、配置管理、计费管理、性能管理、安全管理[cite: 9]",
+            "网络管理模型：管理站 NOC（运行管理程序/SNMP 客户）、被管设备（运行代理程序 Agent/SNMP 服务器）、委托代理 Proxy Agent[cite: 9]",
+            "SNMP 基本原理与协议交互：基于探询（Polling）和陷阱（Trap）机制；基于无连接的 UDP 传输，代理使用 161 端口，管理站使用 162 端口接收 Trap[cite: 9]",
+            "SNMP 三大组成部分：SNMP 协议（定义 PDU 报文格式，如 GetRequest, SetRequest, Trap 等）、管理信息结构 SMI（定义 OID 树状命名、ASN.1 与 BER/TLV 编码规则）、管理信息库 MIB（被管实体中创建的命名对象集合 mib-2）[cite: 9]"
+          ]
+        },
+        {
+          "topic": "网络编程套接字 API 与 P2P 应用",
+          "knowledge_points": [
+            "系统调用与 Socket API：操作系统与应用进程之间的接口，提供套接字描述符管理网络资源[cite: 9]",
+            "TCP 套接字系统调用流程：服务器端调用 socket() -> bind() -> listen() -> accept()（派生并发套接字） -> recv()/send() -> close()；客户端调用 socket() -> connect() -> send()/recv() -> close()[cite: 9]",
+            "P2P 对等网络工作模式：节点兼具客户与服务器双重身份，直接在普通互联网用户之间分散传输数据[cite: 9]",
+            "P2P 结构演进与典型应用：集中目录服务器模式（Napster，集中索引/分散传输）、无结构全分布式模式（Gnutella，有限范围洪泛法 Flooding 查询）、分散定位与分散传输模式（BitTorrent BT，追踪器 Tracker、最稀有优先 Rarest First 下载与互惠上传）[cite: 9]",
+            "P2P 文件分发效率分析：C/S 模式最少时间 T_CS = max(NF/u_s, F/d_min)；P2P 模式最少时间下限 T_P2P >= max(F/u_s, F/d_min, NF/u_T)[cite: 9]",
+            "分布式散列表 DHT（Chord 环）：利用散列函数将资源名与节点 IP 映射为 KID 和 NID，顺时针排列成 Chord 逻辑环，利用指针表（Finger Table）加速查找[cite: 9]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 7,
+      "chapter_title": "第7章 网络安全",
+      "topics": [
+        {
+          "topic": "网络安全问题概述",
+          "knowledge_points": [
+            "计算机网络面临的安全威胁分类：被动攻击（截获、流量分析 Traffic Analysis，只观察不干扰）与 主动攻击（篡改、恶意程序病毒/蠕虫/木马/逻辑炸弹/流氓软件、拒绝服务 DoS 与分布式拒绝服务 DDoS）[cite: 10]",
+            "安全计算机网络的四大目标：保密性（Confidentiality）、端点鉴别（Authentication）、信息完整性（Integrity）、运行安全性与访问控制（Availability/Access Control）[cite: 10]",
+            "数据加密通用模型：明文 X、密文 Y、加密算法 E、解密算法 D、加密密钥 KE、解密密钥 KD；Y = E_KE(X)，X = D_KD(Y)[cite: 10]",
+            "密码学基本概念：密码编码学与密码分析学；无条件安全（理论不可破）与计算上安全[cite: 10]"
+          ]
+        },
+        {
+          "topic": "两类密码体制",
+          "knowledge_points": [
+            "对称密钥密码体制：加密密钥与解密密钥相同；DES（分组密码，组长 64 位，实际密钥 56 位，已不安全）；3DES（三重 DES，使用两个 56 位密钥执行 E-D-E 运算）；AES（高级加密标准，组长 128 位，密钥 128/192/256 位，高效安全）[cite: 10]",
+            "公钥密码体制（非对称密钥密码体制）：解决对称密钥分配难题及数字签名需求；公开加密密钥 PK（公钥），保密解密密钥 SK（私钥），由 PK 推导 SK 在计算上不可能；公钥加密仅私钥可解，加密与解密运算可互换顺序；典型算法为 RSA 体制（基于大数分解问题）[cite: 10]"
+          ]
+        },
+        {
+          "topic": "报文鉴别与实体鉴别",
+          "knowledge_points": [
+            "报文鉴别与实体鉴别区别：报文鉴别核实报文来源及完整性；实体鉴别在通信全过程中验证对方真实身份[cite: 10]",
+            "数字签名原理与三大功能：使用发送方私钥 SK_A 进行签名，接收方用公钥 PK_A 核实；实现端点鉴别（证明来源）、报文完整性（防篡改）与不可否认/抗抵赖[cite: 10]",
+            "密码散列函数（Cryptographic Hash Function）：输出固定长度、单向性、强抗碰撞性、比特极敏感性；常用算法包含 MD5（128位，已被攻破）、SHA-1（160位，已停用）、SHA-2（SHA-256等）、SHA-3[cite: 10]",
+            "报文鉴别码 MAC 与 HMAC：MAC 结合共享密钥 K 与报文 X 进行散列/加密计算，防伪造与防篡改；HMAC 基于密码散列算法实现；已签名的 MAC 对短散列值 H(X) 用私钥加密，大幅降低公钥算法 CPU 开销[cite: 10]",
+            "实体鉴别机制与风险：口令鉴别易受截获与重放攻击（Replay Attack）；不重数（Nonce）为一次性大随机数，结合对称加密或公钥数字签名抵抗重放攻击；中间人攻击（Man-in-the-Middle）通过截获并伪造公钥破坏鉴别[cite: 10]"
+          ]
+        },
+        {
+          "topic": "密钥分配与认证中心 CA",
+          "knowledge_points": [
+            "对称密钥分配与 KDC：密钥分配中心 KDC 为预存主密钥（Master Key）的用户临时分配一次性会话密钥（Session Key）；Kerberos V5 协议结合鉴别服务器 AS 与票据授予服务器 TGS，使用票据 Ticket 进行鉴别，依赖松散时钟同步抵抗重放攻击[cite: 10]",
+            "公钥分配与数字证书：认证中心 CA（Certification Authority）为权威第三方机构，负责签发数字证书；数字证书将实体身份信息与公钥绑定，并附带 CA 的私钥数字签名，不可伪造；验证时使用 CA 的公钥核实签名[cite: 10]",
+            "X.509 标准与 PKI：公钥基础设施 PKI 标准格式，包含版本、序列号、签名算法、发行者、有效期、主体名、公钥等；根 CA（自签名根证书）向下延伸构成树状信任链与证书链；提供证书撤销名单 CRL 机制[cite: 10]"
+          ]
+        },
+        {
+          "topic": "互联网安全协议（IPsec, TLS, PGP）",
+          "knowledge_points": [
+            "网络层安全协议 IPsec：协议族包含 AH 协议（鉴别首部，源鉴别与完整性，不保密）、ESP 协议（封装安全有效载荷，源鉴别、完整性与加密保密）、加密算法、IKE 协议（密钥交换）；工作方式分为运输方式（主机到主机，不改变原始 IP 首部）与 隧道方式（路由器到路由器/VPN，封装原始 IP 数据报加新 IP 首部）；安全关联 SA 为单向逻辑连接，由 SPI、源/目的 IP 及算法确定，由 SAD 与 SPD 数据库管理[cite: 10]",
+            "运输层安全协议 TLS / SSL：位于 TCP 之上、应用层（如 HTTP）之下，为 TCP 传输提供安全通道（如 HTTPS 默认端口 443）；握手阶段协商加密算法、验证 CA 证书、生成预主密钥 PMS 并推导主密钥 MS 与会话密钥；会话阶段使用带关联数据的鉴别加密 AEAD 对记录进行分块、序号防重放、加密与 MAC 校验；TLS 1.3 采用 ECC 与 AES，支持 0-RTT 极速握手[cite: 10]",
+            "应用层电子邮件安全协议 PGP：综合 RSA/DSA 公钥密码、IDEA/AES 对称密码、MD5/SHA-1 散列及 ZIP 压缩技术；发送方用私钥对邮件签名，生成一次性对称密钥 K 对“明文+签名”加密，用收件人公钥加密 K 后拼接发送；接收方用私钥解密 K，用 K 解密出邮件与签名，再用发件人公钥验证签名[cite: 10]"
+          ]
+        },
+        {
+          "topic": "系统安全：防火墙与入侵检测 IDS",
+          "knowledge_points": [
+            "防火墙（Firewall）访问控制技术：分组过滤路由器工作在网络层/运输层，依据源/目的 IP、端口号、协议类型匹配规则，分为无状态过滤与有状态过滤，高效透明但无法检查高层内容；应用网关 / 代理服务器工作在应用层，拆开报文检查请求合法性并代表客户端中继，安全性高但开销大且对应用不透明[cite: 10]",
+            "入侵检测系统 IDS（Intrusion Detection System）：执行深度分组检查并告警，补充防火墙静态边界防护；基于特征的 IDS 维护已知攻击特征规则库，精准识别已知攻击；基于异常的 IDS 学习正常流量统计规律，通过偏离度判定疑似入侵[cite: 10]"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": 9,
+      "chapter_title": "第9章 无线网络和移动网络",
+      "topics": [
+        {
+          "topic": "无线局域网 WLAN",
+          "knowledge_points": [
+            "无线局域网 WLAN 概念与分类：采用无线通信技术的局域网，分为有固定基础设施 WLAN 与 无固定基础设施 WLAN（移动自组网 Ad Hoc）[cite: 11]",
+            "IEEE 802.11 (Wi-Fi) 架构与网络构件：基本服务集 BSS（含 AP 和移动站，覆盖区域为 BSA）；扩展服务集 ESS（通过分配系统 DS 将多个 BSS 互连，通过门户 Portal 连接其他 802.x 局域网）；标识符包含 SSID（无线网名称）、BSSID（AP 的 MAC 地址）、ESSID；频段包含 2.4 GHz 与 5 GHz；关联（Association）可通过被动扫描（接收信标帧 Beacon）或主动扫描（广播 Probe Request 探针请求）建立[cite: 11]",
+            "802.11 物理层演进标准：802.11b (Wi-Fi 1)、802.11a (Wi-Fi 2)、802.11g (Wi-Fi 3)、802.11n (Wi-Fi 4, 引入 MIMO+OFDM)、802.11ac (Wi-Fi 5)、802.11ax (Wi-Fi 6, 解决高密度吞吐量)；关键技术包括扩频、正交频分复用 OFDM、多入多出 MIMO[cite: 11]",
+            "802.11 MAC 层协议与 CSMA/CA 机制：无线设备无法实现边发边听的碰撞检测，且存在隐蔽站问题（Hidden Station Problem）；MAC 协调功能分为分布协调功能 DCF（基于 CSMA/CA 争用信道）与 点协调功能 PCF（AP 集中控制探询）；帧间间隔 IFS 包含 SIFS（短帧间间隔，最高优先级）与 DIFS（分布协调帧间间隔）；碰撞避免 CA 机制包含物理与虚拟载波监听（网络分配向量 NAV 标注信道忙时间）、退避算法（争用窗口 CW 内随机退避时隙倒计时，重传时 CW 指数倍增）；信道预约机制（RTS/CTS）通过源站发 RTS、目的站回复 CTS 解决隐蔽站问题[cite: 11]",
+            "802.11 MAC 帧结构：首部 30 字节，含 4 个地址字段（地址 1=接收地址/直接下一跳，地址 2=发送地址，地址 3 与 4 依据去往/来自 AP 标志确定）、帧主体与 FCS 尾部[cite: 11]",
+            "移动自组网络（Ad Hoc）与 无线传感器网络 WSN：无 AP 平等节点自组织网络，多跳路由；WSN 由大量低功耗传感器节点构成，应用于物联网 IoT 环境监测与工业控制[cite: 11]"
+          ]
+        },
+        {
+          "topic": "无线个人区域网 WPAN",
+          "knowledge_points": [
+            "WPAN 概念：个人工作空间（半径约 10m）低功耗、低成本、小范围电缆替代技术[cite: 11]",
+            "蓝牙系统（Bluetooth / IEEE 802.15.1）：基于 TDM 与跳频扩频 FHSS 技术；拓扑为皮可网 Piconet（1 主设备 Master + 最多 7 从设备 Slave）与 扩散网 Scatternet；低功耗蓝牙 BLE（Bluetooth 4.0/5.0）大幅降低功耗并延长电池寿命[cite: 11]",
+            "低速 WPAN 与 ZigBee（IEEE 802.15.4）：短距离、低速率、低成本、极低功耗、大容量（网络最多支持 65000 节点）；设备分为全功能设备 FFD（网络协调器/路由器）与 精简功能设备 RFD（端节点）；支持星形和网状拓扑[cite: 11]",
+            "高速 WPAN（802.15.3 / UWB 超宽带）：使用瞬间高速脉冲微波频段，提供 100~400 Mbit/s 高速率多媒体传输[cite: 11]"
+          ]
+        },
+        {
+          "topic": "蜂窝移动通信网",
+          "knowledge_points": [
+            "蜂窝移动通信演进轨迹：1G 模拟语音 (FDMA)；2G (GSM) 数字语音 (FDMA/TDMA)，划分蜂窝小区 Cell、基站 BS、基站控制器 BSC、移动交换中心 MSC/GMSC，支持频率复用；2.5G/2.75G (GPRS/EDGE) 引入分组交换域网元 SGSN 与 GGSN；3G (UMTS) WCDMA/TD-SCDMA/CDMA2000，引入 UTRAN（Node-B 基站、RNC 控制器）[cite: 11]",
+            "4G LTE 体系结构与技术：取消电路交换，实现全网 IP 化（全分组交换），控制层面与数据层面分离；三大部分包含用户设备 UE、演进无线接入网 E-UTRAN（基站 eNB 兼具 Node-B 和 RNC 功能）、演进分组核心网 EPC（含 MME 信令/移动性管理实体、S-GW 服务网关、P-GW 网关/锚点/IP分配、HSS 归属数据库）[cite: 11]",
+            "LTE 关键技术：下行 OFDMA、上行 SC-FDMA、64QAM 高阶调制、MIMO 多天线与 AMC 自适应调制编码；GTP 隧道机制（GTP-U）利用隧道端点标识符 TEID 在 eNB <-> S-GW <-> P-GW 间传递 IP 分组，屏蔽 UE 漫游移动性[cite: 11]",
+            "跟踪区 TA 与 TAL 寻呼机制：划分跟踪区 TA 与 跟踪区列表 TAL，UE 在 TAL 内漫游时不触发更新，被唤醒时仅在 TAL 内由 MME 寻呼；语音方案采用电路交换回落 CSFB 或基于 IMS 的 VoLTE[cite: 11]"
+          ]
+        },
+        {
+          "topic": "移动 IP 技术",
+          "knowledge_points": [
+            "移动 IP（Mobile IP）概念与目标：允许计算机跨网段漫游时保留其固定的永久地址（归属地址），实现移动性对上层 TCP/应用透明[cite: 11]",
+            "移动 IP 四大核心要素：归属网络与归属代理 HA、被访网络与外地代理 FA、永久地址 Home Address、转交地址 COA[cite: 11]",
+            "间接路由选择通信步骤：1. 通信者发数据报给移动站永久地址，由归属代理 HA 截获；2. HA 利用 IP 隧道技术（IP-in-IP 封装）发往外地代理 FA（目的 IP 为转交地址 COA）；3. FA 拆封后交付给移动站；4. 移动站回复数据报时，直接以永久地址为源 IP、通信者 IP 为目的 IP 发送（直接交付）[cite: 11]",
+            "三角形路由选择问题与优化：间接路由中数据报绕道 HA 导致时延增加；优化方案采用直接路由选择（通信者代理查询 HA 获取转交地址，结合锚外地代理 Anchor FA 进行直接隧道传输）[cite: 11]"
+          ]
+        }
+      ]
+    }
+  ]
+}

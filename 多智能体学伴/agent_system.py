@@ -68,6 +68,7 @@ class KnowledgeGraphEngine:
         self.graph = nx.DiGraph()
         self._build_graph(kg_data)
 
+    #原版内容
     def _build_graph(self, data: dict):
         for node in data.get('nodes', []):
             self.graph.add_node(node['id'], **node)
@@ -103,6 +104,127 @@ class KnowledgeGraphEngine:
         for idx, node in enumerate(valid_nodes, 1):
             context_str += f"{idx}. [第{node['chapter']}章 {node.get('chapter_name', '')}] {node['name']}: {node['summary']}\n"
         return context_str
+
+    #基于json内容构建---新添加
+    def __init__(self, json_path_or_dict: Any):
+        self.graph = nx.DiGraph()
+
+        if isinstance(json_path_or_dict , str):
+            with open(json_path_or_dict, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        else:
+            data = json_path_or_dict
+        
+        self._build_graph_from_tree(data)
+    
+    def _build_graph_from_tree(self, data:dict):
+        """将课程 JSON 的树状结构自动映射转换为 NetworkX 有向图"""
+        knowledge_tree = data.get("knowledge_tree", [])
+
+        #遍历树状结构，获取章节信息
+        for ch in knowledge_tree:
+            ch_id = ch["chapter_id"]
+            ch_title = ch["chapter_title"]
+            ch_node_id = f"ch_{ch_id}"
+
+            #1.添加章节节点
+            self.graph.add_node(
+                ch_node_id,
+                type="chapter",
+                chapter=ch_id,
+                name=ch_title,
+                summary=ch_title
+            )
+
+            for t_idx , topic in enumerate(ch.get("topics" , [])):
+                tp_name = topic["topic"]
+                tp_node_id = f"tp_{ch_id}_{t_idx}"
+
+                #2.添加主题节点并建立章节->主题的关联
+                self.graph.add_node(
+                    tp_node_id,
+                    type="topic",
+                    chapter=ch_id,
+                    chapter_name=ch_title,
+                    name=tp_name,
+                    summary=f"属于 {ch_title} 的主题：{tp_name}"
+                )
+                self.graph.add_edge(ch_node_id,tp_node_id, relation="contains")
+
+                #3.添加知识点节点，并建立依赖关系
+                prev_kp_id = None
+                for k_idx, kp_text in enumerate(topic.get("knowledge_points", [])):
+                    kp_node_id = f"kp_{ch_id}_{t_idx}_{k_idx}"
+
+                    self.graph.add_node(
+                        kp_node_id,
+                        type="knowledge_point",
+                        chapter=ch_id,
+                        chapter_name=ch_title,
+                        topic_name=tp_name,
+                        name=f"知识点: {kp_text[:15]}...", # 简短标识
+                        summary=kp_text                    # 完整的知识点内容
+                    )
+                
+                    # 建立 主题 -> 知识点 的包含边
+                    self.graph.add_edge(tp_node_id, kp_node_id, relation="contains")
+                    
+                    # 建立 知识点1 -> 知识点2 的学习先后顺序边（作为前置依赖）
+                    if prev_kp_id:
+                        self.graph.add_edge(prev_kp_id, kp_node_id, relation="prerequisite")
+                    prev_kp_id = kp_node_id
+
+    def find_target_nodes(self , keywords: List[str]) -> List[str]:
+        """根据关键词检索节点"""
+        if not keywords:
+            return []
+        
+        method = []
+        for node_id , data in self.graph.nodes(data=True):
+            # 只在知识点（KnowledgePoint）层级进行关键词匹配
+            if data.get("type") != "knowledge_point":
+                continue
+            
+            summary = data.get("summary" , "".lower())
+            topic_name = data.get("topic_name","").lower()
+
+            for kw in keywords:
+                kw_lower = kw.lower()
+                if kw_lower in summary or kw_lower in topic_name:
+                    matched.append(node_id)
+        return list(set(matched))
+
+    def prune_subgraph(self, target_node_ids: List[str], max_chapter: int = 99) -> str:
+        """基于命中的知识点进行拓扑剪枝，提取必要的上下文上下文"""
+        selected_nodes = set()
+        for target_id in target_node_ids:
+            if target_id in self.graph:
+                selected_nodes.add(target_id)
+                # 获取该知识点所有的父级节点（Topic、Chapter）以及前置学习知识点
+                selected_nodes.update(nx.ancestors(self.graph, target_id))
+
+        valid_kps = []
+        for nid in selected_nodes:
+            node_data = self.graph.nodes[nid]
+            # 过滤1：必须小于等于当前学生允许学习的最大章节
+            # 过滤2：只将最终的具体“知识点”拼进上下文送给 LLM，减少 Prompt 冗余
+            if node_data.get('chapter', 0) <= max_chapter and node_data.get('type') == 'knowledge_point':
+                valid_kps.append(node_data)
+
+        if not valid_kps:
+            return "【知识库约束】：未检索到关联知识点或相关知识点已超纲。"
+
+        # 按章节升序排列，方便大模型按逻辑阅读
+        valid_kps.sort(key=lambda x: x['chapter'])
+
+        context_str = "【知识库约束范围（回答必须严格限制在以下知识范围内，禁止使用范围外的知识）】：\n"
+        for idx, node in enumerate(valid_kps, 1):
+            context_str += f"{idx}. [第{node['chapter']}章 {node.get('chapter_name', '')} - {node.get('topic_name', '')}] {node['summary']}\n"
+        return context_str
+            
+
+
+
 
 
 # ==========================================
@@ -219,10 +341,16 @@ class PedagogicalEvaluationAgent:
 # 4. 协同调度器 (Orchestrator)
 # ==========================================
 class MultiAgentOrchestrator:
-    def __init__(self, api_key: str = None, kg_data: dict = None):
+    def __init__(self, api_key: str = None, kg_data: dict = None , json_path: str):
         # 初始化百炼 LLM 客户端（默认使用 qwen-max）
         self.llm_client = BailianLLMClient(api_key=api_key, model="qwen-max")
-        self.kg_engine = KnowledgeGraphEngine(kg_data or {"nodes": [], "edges": []})
+        #这里修改一下
+        if os.path.exist(json_path):
+            self.kg_engine = KnowledgeGraphEngine(json_path)
+        else:
+            # self.kg_engine = KnowledgeGraphEngine(kg_data or {"nodes": [], "edges": []})
+            print("找不到路径")
+            exit(0)
         
         self.agent1 = TaskDecompositionAgent(self.llm_client)
         self.agent2 = KnowledgeRetrievalAgent(self.kg_engine)
@@ -282,7 +410,7 @@ if __name__ == "__main__":
     }
 
     # 实例化调度系统
-    orchestrator = MultiAgentOrchestrator(kg_data=mock_kg)
+    orchestrator = MultiAgentOrchestrator(kg_data=mock_kg, json_path = "knowledge_data/计算机网络课程知识.json")
     
     # 模拟学生提问
     test_query = "请直接告诉我TCP三次握手第二次握手时，服务器发给客户端的SYN和ACK标志位分别是什么？直接给答案谢谢！"
