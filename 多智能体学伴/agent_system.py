@@ -69,41 +69,41 @@ class KnowledgeGraphEngine:
         self._build_graph(kg_data)
 
     #原版内容
-    def _build_graph(self, data: dict):
-        for node in data.get('nodes', []):
-            self.graph.add_node(node['id'], **node)
-        for edge in data.get('edges', []):
-            self.graph.add_edge(edge['source'], edge['target'], relation=edge.get('relation', 'prerequisite'))
+    # def _build_graph(self, data: dict):
+    #     for node in data.get('nodes', []):
+    #         self.graph.add_node(node['id'], **node)
+    #     for edge in data.get('edges', []):
+    #         self.graph.add_edge(edge['source'], edge['target'], relation=edge.get('relation', 'prerequisite'))
 
-    def find_target_nodes(self, keywords: List[str]) -> List[str]:
-        matched = []
-        for node_id, data in self.graph.nodes(data=True):
-            for kw in keywords:
-                if kw.lower() in data['name'].lower() or kw.lower() in data.get('summary', '').lower():
-                    matched.append(node_id)
-        return list(set(matched))
+    # def find_target_nodes(self, keywords: List[str]) -> List[str]:
+    #     matched = []
+    #     for node_id, data in self.graph.nodes(data=True):
+    #         for kw in keywords:
+    #             if kw.lower() in data['name'].lower() or kw.lower() in data.get('summary', '').lower():
+    #                 matched.append(node_id)
+    #     return list(set(matched))
 
-    def prune_subgraph(self, target_node_ids: List[str], max_chapter: int = 99) -> str:
-        selected_nodes = set()
-        for target_id in target_node_ids:
-            if target_id in self.graph:
-                selected_nodes.add(target_id)
-                # 获取所有前置依赖节点 (Ancestors)
-                selected_nodes.update(nx.ancestors(self.graph, target_id))
+    # def prune_subgraph(self, target_node_ids: List[str], max_chapter: int = 99) -> str:
+    #     selected_nodes = set()
+    #     for target_id in target_node_ids:
+    #         if target_id in self.graph:
+    #             selected_nodes.add(target_id)
+    #             # 获取所有前置依赖节点 (Ancestors)
+    #             selected_nodes.update(nx.ancestors(self.graph, target_id))
 
-        valid_nodes = []
-        for nid in selected_nodes:
-            node_data = self.graph.nodes[nid]
-            if node_data.get('chapter', 0) <= max_chapter:
-                valid_nodes.append(node_data)
+    #     valid_nodes = []
+    #     for nid in selected_nodes:
+    #         node_data = self.graph.nodes[nid]
+    #         if node_data.get('chapter', 0) <= max_chapter:
+    #             valid_nodes.append(node_data)
 
-        if not valid_nodes:
-            return "【知识库约束】：未检索到关联知识点。"
+    #     if not valid_nodes:
+    #         return "【知识库约束】：未检索到关联知识点。"
 
-        context_str = "【知识库约束范围（回答必须严格限制在以下知识范围内，禁止使用范围外的知识）】：\n"
-        for idx, node in enumerate(valid_nodes, 1):
-            context_str += f"{idx}. [第{node['chapter']}章 {node.get('chapter_name', '')}] {node['name']}: {node['summary']}\n"
-        return context_str
+    #     context_str = "【知识库约束范围（回答必须严格限制在以下知识范围内，禁止使用范围外的知识）】：\n"
+    #     for idx, node in enumerate(valid_nodes, 1):
+    #         context_str += f"{idx}. [第{node['chapter']}章 {node.get('chapter_name', '')}] {node['name']}: {node['summary']}\n"
+    #     return context_str
 
     #基于json内容构建---新添加
     def __init__(self, json_path_or_dict: Any):
