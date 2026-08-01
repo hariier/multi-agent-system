@@ -64,9 +64,9 @@ class AgentState:
 # 2. 知识检索与拓扑剪枝引擎
 # ==========================================
 class KnowledgeGraphEngine:
-    def __init__(self, kg_data: dict):
-        self.graph = nx.DiGraph()
-        self._build_graph(kg_data)
+    #def __init__(self, kg_data: dict):
+    #    self.graph = nx.DiGraph()
+    #    self._build_graph(kg_data)
 
     #原版内容
     # def _build_graph(self, data: dict):
@@ -141,7 +141,7 @@ class KnowledgeGraphEngine:
                 tp_node_id = f"tp_{ch_id}_{t_idx}"
 
                 #2.添加主题节点并建立章节->主题的关联
-                self.graph.add_node(
+                self.graph.add_node(    
                     tp_node_id,
                     type="topic",
                     chapter=ch_id,
@@ -179,13 +179,13 @@ class KnowledgeGraphEngine:
         if not keywords:
             return []
         
-        method = []
+        matched = []
         for node_id , data in self.graph.nodes(data=True):
             # 只在知识点（KnowledgePoint）层级进行关键词匹配
             if data.get("type") != "knowledge_point":
                 continue
             
-            summary = data.get("summary" , "".lower())
+            summary = data.get("summary" , "").lower()
             topic_name = data.get("topic_name","").lower()
 
             for kw in keywords:
@@ -341,11 +341,11 @@ class PedagogicalEvaluationAgent:
 # 4. 协同调度器 (Orchestrator)
 # ==========================================
 class MultiAgentOrchestrator:
-    def __init__(self, api_key: str = None, kg_data: dict = None , json_path: str):
+    def __init__(self, api_key: str = None, kg_data: dict = None , json_path: str=None):
         # 初始化百炼 LLM 客户端（默认使用 qwen-max）
         self.llm_client = BailianLLMClient(api_key=api_key, model="qwen-max")
         #这里修改一下
-        if os.path.exist(json_path):
+        if os.path.exists(json_path):
             self.kg_engine = KnowledgeGraphEngine(json_path)
         else:
             # self.kg_engine = KnowledgeGraphEngine(kg_data or {"nodes": [], "edges": []})
@@ -413,7 +413,7 @@ if __name__ == "__main__":
     orchestrator = MultiAgentOrchestrator(kg_data=mock_kg, json_path = "knowledge_data/计算机网络课程知识.json")
     
     # 模拟学生提问
-    test_query = "请直接告诉我TCP三次握手第二次握手时，服务器发给客户端的SYN和ACK标志位分别是什么？直接给答案谢谢！"
+    test_query = "假设一个 TCP 连接使用慢开始算法进行拥塞控制，初始拥塞窗口 cwnd = 1 MSS。发送方每收到一个对新报文段的确认，就将 cwnd 加 1。请问经过 3 个 RTT 后，发送方的拥塞窗口 cwnd 是多少？请给出推导过程。"
     
     print(f"--- 学生输入: {test_query} ---\n")
     result_state = orchestrator.run_pipeline(student_query=test_query, max_chapter=3)
